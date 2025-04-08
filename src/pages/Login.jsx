@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom"
+import axios from "axios";
 
 export function Login() {
   const [email, setEmail] = useState("");
@@ -10,38 +11,58 @@ export function Login() {
   const [passwordError, setPasswordError] = useState(null);
   const navigate = useNavigate();
 
-  function handleSubmit(event) {
-    event.preventDefault();
-    if (!email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)) {
-      setEmailError("Invalid email");
-      return;
-    }
-    if (password === "") {
-      setPasswordError("Password is required");
-      return;
-    }
+  // function handleSubmit(event) {
+  //   event.preventDefault();
+  //   if (!email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)) {
+  //     setEmailError("Invalid email");
+  //     return;
+  //   }
+  //   if (password === "") {
+  //     setPasswordError("Password is required");
+  //     return;
+  //   }
 
-    if (password.length < 5) {
-      setPasswordError("Password must be at least 5 characters");
-      return;
-    }
-    // localStorage.setItem("email", email);
-    // localStorage.setItem("password", password);
-    const userData = localStorage.getItem("user");
-    if(!userData){
-      toast.error("User not found")
-      return;
-    }
-    const userObject = JSON.parse(userData);
-    const isEmailCorrect = email === userObject.email;
-    const isPasswordCorrect = password === userObject.password;
+  //   if (password.length < 5) {
+  //     setPasswordError("Password must be at least 5 characters");
+  //     return;
+  //   }
+  //   // localStorage.setItem("email", email);
+  //   // localStorage.setItem("password", password);
+  //   // const userData = localStorage.getItem("user");
+  //   // if(!userData){
+  //   //   toast.error("User not found")
+  //   //   return;
+  //   // }
+  //   // const userObject = JSON.parse(userData);
+  //   // const isEmailCorrect = email === userObject.email;
+  //   // const isPasswordCorrect = password === userObject.password;
 
-    if(!isEmailCorrect || !isPasswordCorrect){
-      toast.error("invalid credentials");
-      return;
+  //   // if(!isEmailCorrect || !isPasswordCorrect){
+  //   //   toast.error("invalid credentials");
+  //   //   return;
+  //   // }
+  //   toast.success("Login is successiful");
+  //   navigate("/dashboard");
+  // }
+
+  async function handleSubmit(ev){
+    ev.preventDefault();
+    try {
+      //Ip address of localhost is 127.0.0.1
+      const res = await axios.post("http://localhost:3500/login", {
+        email: email,
+        password: password,
+      });
+
+      toast.success("Login is successful");
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user-info", JSON.stringify(res.data.user));
+      navigate("/dashboard");
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data.message);
+      
     }
-    toast.success("Login is successiful");
-    navigate("/dashboard");
   }
 
   return (

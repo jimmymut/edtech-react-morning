@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 export function Signup() {
   const [username, setUsername] = useState("");
@@ -8,18 +9,27 @@ export function Signup() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  function handleSubmit(ev){
+  // submit data to backend
+  async function handleSubmit(ev){
+
     ev.preventDefault();
-    const user = {
+    const data = {
         username: username,
         password: password,
         email: email
     };
-    localStorage.setItem("user", JSON.stringify(user));
-    toast.success("Your account is ssuccessfully created!")
-    // location.reload();
-    document.getElementById("form").reset();
-    navigate("/login");
+
+    try {
+      // make a request to register endpoint
+      await axios.post("http://localhost:3500/register", data);
+      toast.success("Your account is ssuccessfully created!")
+      document.getElementById("form").reset();
+      navigate("/login");
+    } catch (error) {
+      console.log(error);
+      const response = error.response.data;
+      toast.error(response.message);
+    }
   }
   return (
     <form id="form" onSubmit={(event)=>handleSubmit(event)} className="p-10 max-w-md flex flex-col items-center justify-center gap-3">
