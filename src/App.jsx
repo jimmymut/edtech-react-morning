@@ -9,6 +9,8 @@ import { Login } from "./pages/Login";
 import { ToastContainer } from "react-toastify";
 import { Signup } from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
+import Users from "./pages/Users";
+
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/users" element={<Users />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

@@ -32,7 +32,7 @@ export default function Posts() {
       ) : (
         <div className="flex gap-3 my-5 mx-10 flex-wrap">
           {posts.length === 0 && <p>No posts yet</p>}
-          {posts.map((pst, index) => (
+          {posts.map((pst) => (
             <div
               className="flex gap-2 bg-blue-400 h-[250px] pr-10 rounded-xl w-[350px]"
               key={pst.id}

@@ -8,7 +8,7 @@ export function Login() {
   const [password, setPassword] = useState("");
   // const [showPsd, setShowPsd] = useState(false);
   const [emailError, setEmailError] = useState(null);
-  const [passwordError, setPasswordError] = useState(null);
+  // const [passwordError, setPasswordError] = useState(null);
   const navigate = useNavigate();
 
   // function handleSubmit(event) {
@@ -98,9 +98,9 @@ export function Login() {
               setPassword(event.target.value);
             }}
           />
-          {passwordError && (
+          {/* {passwordError && (
             <p className="text-red-500 text-xs">{passwordError}</p>
-          )}
+          )} */}
           {/* <button onClick={setShowPsd(!showPsd)}>View Password</button> */}
         </div>
         <button
